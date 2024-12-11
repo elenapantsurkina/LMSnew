@@ -13,13 +13,15 @@ class CourseSerializer(ModelSerializer):
     quantity_lessons = serializers.SerializerMethodField()
     info_lessons = serializers.SerializerMethodField()
 
-    def get_quantity_lessons(self, obj):
-        return obj.lesson_set.count()
-
-    def get_info_lessons(self, obj):
-        lessons = obj.lesson_set.all()
-        return LessonSerializer(lessons, many=True).data
-
     class Meta:
         model = Course
         fields = ["name", "description", "preview", "quantity_lessons", "info_lessons"]
+
+    def get_quantity_lessons(self, obj):
+        # получаем количество уроков
+        return obj.lesson_set.count()
+
+    def get_info_lessons(self, obj):
+        # получаем все уроки связанные с курсом
+        lessons = obj.lesson_set.all()
+        return LessonSerializer(lessons, many=True).data

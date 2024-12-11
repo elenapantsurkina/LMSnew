@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from lms.models import Course, Lesson
 
 
 class User(AbstractUser):
@@ -36,3 +37,61 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
+
+
+class Payment(models.Model):
+    # Класс оплат
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name="Пользователь",
+    )
+    date_of_payment = models.DateField(
+        verbose_name="Дата оплаты",
+        blank=True,
+        null=True,
+        help_text="Укажите дату оплаты",
+    )
+    paid_course = models.ForeignKey(
+        Course,
+        on_delete=models.SET_NULL,
+        verbose_name="Оплаченный курс",
+        blank=True,
+        null=True,
+    )
+    paid_lesson = models.ForeignKey(
+        Lesson,
+        on_delete=models.SET_NULL,
+        verbose_name="Оплаченный урок",
+        blank=True,
+        null=True,
+    )
+    amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        verbose_name="Цена",
+        help_text="Введите сумму оплаты",
+        null=True,
+        blank=True,
+    )
+    FORM_PAYMENT_CHOICES = [
+        ("transfer_account", "перевод на счет"),
+        ("cash", "наличные"),
+    ]
+
+    form_of_payment = models.CharField(
+        max_length=200,
+        verbose_name="Форма оплаты",
+        choices=FORM_PAYMENT_CHOICES,
+        default="transfer_account",
+        help_text="Укажите форму оплаты",
+        null=True,
+        blank=True,
+    )
+
+    class Meta:
+        verbose_name = "Оплата"
+        verbose_name_plural = "Оплаты"
+
+    def __str__(self):
+        return f"Оплата {self.id} пользователя {self.user.email}" if self.user else "Оплата без пользователя"
