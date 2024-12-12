@@ -1,6 +1,20 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from lms.models import Course, Lesson
+from django.contrib.auth.models import BaseUserManager
+
+
+class UserManager(BaseUserManager):
+    use_in_migrations = True
+
+    def create_user(self, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError("У пользователя должна быть почта")
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
 
 
 class User(AbstractUser):
@@ -30,6 +44,8 @@ class User(AbstractUser):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
+
+    objects = UserManager()
 
     class Meta:
         verbose_name = "Пользователь"
