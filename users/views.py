@@ -16,16 +16,16 @@ class PaymentViewSet(ModelViewSet):
     ordering_fields = ("date_of_payment", )
 
 
-class UserViewSet(ModelViewSet):
-    serializer_class = UserSerializer
-    queryset = User.objects.all()
+# class UserViewSet(ModelViewSet):
+#     serializer_class = UserSerializer
+#     queryset = User.objects.all()
 
 
 class UserCreateAPIView(CreateAPIView):
     """CRUD для регистрации пользователя"""
     serializer_class = UserSerializer
     queryset = User.objects.all()
-    permission_classes = (AllowAny,)
+    # permission_classes = (AllowAny,)
 
     def perform_create(self, serializer):
         user = serializer.save(is_active=True)
