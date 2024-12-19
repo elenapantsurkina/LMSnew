@@ -11,18 +11,19 @@ class CourseViewSet(ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
-    """метод для управления созданием объекта и автомат привязки создаваемого объекта к авторизованному пользователю."""
+    """Метод для управления созданием объекта и автомат привязки создаваемого объекта к авторизованному пользователю."""
     def perform_create(self, serializer):
         course = serializer.save()
         course.owner = self.request.user
         course.save()
 
     def get_permissions(self):
+        """Метод определения действий в зависимости является ли пользователь мотератором или владельцем."""
         if self.action == "create":
             self.permission_classes = (~IsModer,)
         elif self.action in ["update", "retrieve"]:
             self.permission_classes = (IsModer | IsOwner,)
-        elif self.action in ["destroy"]:
+        elif self.action == "destroy":
             self.permission_classes = (~IsModer | IsOwner,)
         return super().get_permissions()
 
