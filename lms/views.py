@@ -4,12 +4,14 @@ from users.permissions import IsModer, IsOwner
 from lms.models import Course, Lesson
 from lms.serializers import CourseSerializer, LessonSerializer
 from rest_framework.permissions import IsAuthenticated
+from lms.paginations import CustomPagination
 
 
 # CRUD для Course
 class CourseViewSet(ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+    pagination_class = CustomPagination
 
     """Метод для управления созданием объекта и автомат привязки создаваемого объекта к авторизованному пользователю."""
     def perform_create(self, serializer):
@@ -42,6 +44,7 @@ class LessonCreateApiView(CreateAPIView):
 class LessonListApiView(ListAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
+    pagination_class = CustomPagination
 
 
 class LessonRetrieveApiView(RetrieveAPIView):
