@@ -52,4 +52,5 @@ class LessonTestCase(APITestCase):
     def test_lesson_list(self):
         url = reverse("lms:lessons_list")
         response = self.client.get(url)
+        print(response.json())
         self.assertEqual(response.status_code, status.HTTP_200_OK)
