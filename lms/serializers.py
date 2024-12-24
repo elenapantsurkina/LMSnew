@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from lms.models import Course, Lesson
+from lms.models import Course, Lesson, Subscription
 from rest_framework import serializers
 from lms.validators import validate_link
 
@@ -29,3 +29,10 @@ class CourseSerializer(serializers.ModelSerializer):
         """получаем все уроки связанные с курсом"""
         lessons = obj.lesson_set.all()
         return LessonSerializer(lessons, many=True).data
+
+
+class SubscriptionSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Subscription
+        fields = "__all__"
