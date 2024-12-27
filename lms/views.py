@@ -2,8 +2,8 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, \
     get_object_or_404
 from users.permissions import IsModer, IsOwner
-from lms.models import Course, Lesson, Subscription
-from lms.serializers import CourseSerializer, LessonSerializer, SubscriptionSerializer
+from lms.models import Course, Lesson, Subscription, CoursePayment
+from lms.serializers import CourseSerializer, LessonSerializer, SubscriptionSerializer, CoursePaymentSerializer
 from rest_framework.permissions import IsAuthenticated
 from lms.paginations import CustomPagination
 from rest_framework.response import Response
@@ -88,3 +88,8 @@ class SubscriptionApiView(APIView):
             message = "Подписка добавлена"
 
         return Response({"message": message})
+
+
+class CoursePaymentCreateApiView(CreateAPIView):
+    queryset = CoursePayment.objects.all()
+    serializer_class = CoursePaymentSerializer
