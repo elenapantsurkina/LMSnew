@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from lms.paginations import CustomPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from lms.services import create_stripe_price, create_stripe_product, create_stripe_session
 
 
 # CRUD для Course
@@ -93,3 +94,13 @@ class SubscriptionApiView(APIView):
 class CoursePaymentCreateApiView(CreateAPIView):
     queryset = CoursePayment.objects.all()
     serializer_class = CoursePaymentSerializer
+
+    def perform_create(self, serializer):
+        payment = serializer.save(user=self.request.user)
+        name_course = create_stripe_product(payment)
+        price = create_stripe_price(payment.amount, name_course)
+        session_id, payment_link = create_stripe_session(price)
+        payment.session_id = session_id
+        payment.link = payment_link
+        payment.save()
+ 
