@@ -120,6 +120,13 @@ class CoursePayment(models.Model):
         blank=True,
         null=True,
     )
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE,
+        verbose_name="Курс",
+        help_text="Укажите курс, к которому относится оплата",
+        null=True,
+    )
 
     class Meta:
         verbose_name = "Оплата курса"

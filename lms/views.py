@@ -96,8 +96,12 @@ class CoursePaymentCreateApiView(CreateAPIView):
     serializer_class = CoursePaymentSerializer
 
     def perform_create(self, serializer):
-        payment = serializer.save(user=self.request.user)
-        name_course = create_stripe_product(payment)
+        course_id = self.request.data.get('course_id')
+        course = get_object_or_404(Course, id=course_id)
+        payment = serializer.save(user=self.request.user, course=course)
+        if payment.course is None:
+            raise ValueError("Курс не найден для данного платежа.")
+        name_course = create_stripe_product(payment.course)
         price = create_stripe_price(payment.amount, name_course)
         session_id, payment_link = create_stripe_session(price)
         payment.session_id = session_id
