@@ -9,9 +9,10 @@ from lms.paginations import CustomPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from lms.services import create_stripe_price, create_stripe_product, create_stripe_session
+from lms.tasks import send_information_updating_courses
 
 
-# CRUD для Course
+"""CRUD для Course."""
 class CourseViewSet(ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
@@ -87,6 +88,9 @@ class SubscriptionApiView(APIView):
         else:
             Subscription.objects.create(user=user, course=course)
             message = "Подписка добавлена"
+
+            """Вызов задачи для отправки письма"""
+            send_information_updating_courses.delay(user.email)
 
         return Response({"message": message})
 
