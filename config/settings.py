@@ -145,7 +145,7 @@ CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 CELERY_BEAT_SCHEDULE = {
     'checking_for_active_users': {
-        'task': 'lms.tasks.checking_for_active_users',
+        'task': 'users.tasks.checking_for_active_users',
         'schedule': timedelta(days=1),
     },
 }
