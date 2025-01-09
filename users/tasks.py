@@ -10,3 +10,4 @@ def checking_for_active_users():
     thirty_days_ago = timezone.now() - datetime.timedelta(days=30)
     users = User.objects.filter(last_login__lt=thirty_days_ago).exclude(last_login__isnull=True)
     users.update(is_active=False)
+    users.save()
