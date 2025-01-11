@@ -1,27 +1,18 @@
-from django.db import models
 from django.conf import settings
+from django.db import models
 
 
 class Course(models.Model):
     """Модель курс."""
-    name = models.CharField(
-        max_length=50,
-        verbose_name="Название курса",
-        help_text="Укажите название курса")
+
+    name = models.CharField(max_length=50, verbose_name="Название курса", help_text="Укажите название курса")
     description = models.TextField(
-        blank=True,
-        null=True,
-        verbose_name="Описание курса",
-        help_text="Укажите описание курса")
-    preview = models.ImageField(
-        upload_to="lms/preview/course",
-        blank=True,
-        null=True,
-        verbose_name="Превью",
-        help_text="Загрузите превью")
-    owner = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True
+        blank=True, null=True, verbose_name="Описание курса", help_text="Укажите описание курса"
     )
+    preview = models.ImageField(
+        upload_to="lms/preview/course", blank=True, null=True, verbose_name="Превью", help_text="Загрузите превью"
+    )
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True)
 
     class Meta:
         verbose_name = "Курс"
@@ -33,37 +24,21 @@ class Course(models.Model):
 
 class Lesson(models.Model):
     """Модель урок."""
-    name = models.CharField(
-        max_length=50,
-        verbose_name="Название урока",
-        help_text="Укажите название урока")
+
+    name = models.CharField(max_length=50, verbose_name="Название урока", help_text="Укажите название урока")
     course = models.ForeignKey(
-        Course,
-        on_delete=models.SET_NULL,
-        verbose_name="Курс",
-        help_text="Выберите курс",
-        blank=True,
-        null=True)
-    description = models.TextField(
-        blank=True,
-        null=True,
-        verbose_name="Описание урока",
-        help_text="Укажите описание урока")
-    preview = models.ImageField(
-        upload_to="lms/preview/lesson",
-        blank=True,
-        null=True,
-        verbose_name="Превью",
-        help_text="Загрузите превью")
-    video = models.CharField(
-        max_length=200,
-        blank=True,
-        null=True,
-        verbose_name="Ссылка на видео",
-        help_text="Укажите ссылку на видео")
-    owner = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True
+        Course, on_delete=models.SET_NULL, verbose_name="Курс", help_text="Выберите курс", blank=True, null=True
     )
+    description = models.TextField(
+        blank=True, null=True, verbose_name="Описание урока", help_text="Укажите описание урока"
+    )
+    preview = models.ImageField(
+        upload_to="lms/preview/lesson", blank=True, null=True, verbose_name="Превью", help_text="Загрузите превью"
+    )
+    video = models.CharField(
+        max_length=200, blank=True, null=True, verbose_name="Ссылка на видео", help_text="Укажите ссылку на видео"
+    )
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True)
 
     class Meta:
         verbose_name = "Урок"
@@ -83,10 +58,7 @@ class Subscription(models.Model):
         blank=True,
         null=True,
     )
-    course = models.ForeignKey(
-        Course,
-        on_delete=models.CASCADE,
-        verbose_name="Курс")
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="Курс")
 
     class Meta:
         verbose_name = "Подписка"
@@ -95,23 +67,16 @@ class Subscription(models.Model):
 
 class CoursePayment(models.Model):
     """Модель оплаты курсов"""
+
     amount = models.PositiveIntegerField(
         verbose_name="Оплата за курс",
         help_text="Укажите сумму оплаты",
     )
     session_id = models.CharField(
-        max_length=255,
-        blank=True,
-        null=True,
-        verbose_name="Id сессии",
-        help_text="Укажите Id сессии"
+        max_length=255, blank=True, null=True, verbose_name="Id сессии", help_text="Укажите Id сессии"
     )
     link = models.URLField(
-        max_length=400,
-        blank=True,
-        null=True,
-        verbose_name="Ссылка на оплату",
-        help_text="Укажите ссылку на оплату"
+        max_length=400, blank=True, null=True, verbose_name="Ссылка на оплату", help_text="Укажите ссылку на оплату"
     )
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,

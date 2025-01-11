@@ -8,25 +8,76 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('lms', '0001_initial'),
-        ('users', '0001_initial'),
+        ("lms", "0001_initial"),
+        ("users", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Payment',
+            name="Payment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('date_of_payment', models.DateField(blank=True, help_text='Укажите дату оплаты', null=True, verbose_name='Дата оплаты')),
-                ('amount', models.DecimalField(blank=True, decimal_places=2, help_text='Введите сумму оплаты', max_digits=10, null=True, verbose_name='Цена')),
-                ('form_of_payment', models.CharField(blank=True, choices=[('transfer_account', 'перевод на счет'), ('cash', 'наличные')], default='transfer_account', help_text='Укажите форму оплаты', max_length=200, null=True, verbose_name='Форма оплаты')),
-                ('paid_course', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='lms.course', verbose_name='Оплаченный курс')),
-                ('paid_lesson', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='lms.lesson', verbose_name='Оплаченный урок')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='Пользователь')),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                (
+                    "date_of_payment",
+                    models.DateField(
+                        blank=True, help_text="Укажите дату оплаты", null=True, verbose_name="Дата оплаты"
+                    ),
+                ),
+                (
+                    "amount",
+                    models.DecimalField(
+                        blank=True,
+                        decimal_places=2,
+                        help_text="Введите сумму оплаты",
+                        max_digits=10,
+                        null=True,
+                        verbose_name="Цена",
+                    ),
+                ),
+                (
+                    "form_of_payment",
+                    models.CharField(
+                        blank=True,
+                        choices=[("transfer_account", "перевод на счет"), ("cash", "наличные")],
+                        default="transfer_account",
+                        help_text="Укажите форму оплаты",
+                        max_length=200,
+                        null=True,
+                        verbose_name="Форма оплаты",
+                    ),
+                ),
+                (
+                    "paid_course",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="lms.course",
+                        verbose_name="Оплаченный курс",
+                    ),
+                ),
+                (
+                    "paid_lesson",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="lms.lesson",
+                        verbose_name="Оплаченный урок",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="Пользователь",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Оплата',
-                'verbose_name_plural': 'Оплаты',
+                "verbose_name": "Оплата",
+                "verbose_name_plural": "Оплаты",
             },
         ),
     ]
