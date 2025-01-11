@@ -1,11 +1,12 @@
 from rest_framework import serializers
-from lms.models import Course, Lesson, Subscription, CoursePayment
-from rest_framework import serializers
+
+from lms.models import Course, CoursePayment, Lesson, Subscription
 from lms.validators import validate_link
 
 
 class LessonSerializer(serializers.ModelSerializer):
     """Валидация."""
+
     video = serializers.CharField(validators=[validate_link])
 
     class Meta:

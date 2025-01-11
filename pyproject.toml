@@ -24,6 +24,8 @@ redis = "^5.2.1"
 django-celery-beat = "^2.7.0"
 gevent = "^24.11.1"
 pybloom-live = "^4.0.0"
+black = "^24.10.0"
+isort = "^5.13.2"
 
 
 [tool.poetry.group.lint.dependencies]

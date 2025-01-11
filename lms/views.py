@@ -1,24 +1,33 @@
-from rest_framework.viewsets import ModelViewSet
-from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, \
-    get_object_or_404
-from users.permissions import IsModer, IsOwner
-from lms.models import Course, Lesson, Subscription, CoursePayment
-from lms.serializers import CourseSerializer, LessonSerializer, SubscriptionSerializer, CoursePaymentSerializer
+from rest_framework.generics import (
+    CreateAPIView,
+    DestroyAPIView,
+    ListAPIView,
+    RetrieveAPIView,
+    UpdateAPIView,
+    get_object_or_404,
+)
 from rest_framework.permissions import IsAuthenticated
-from lms.paginations import CustomPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
+
+from lms.models import Course, CoursePayment, Lesson, Subscription
+from lms.paginations import CustomPagination
+from lms.serializers import CoursePaymentSerializer, CourseSerializer, LessonSerializer, SubscriptionSerializer
 from lms.services import create_stripe_price, create_stripe_product, create_stripe_session
 from lms.tasks import send_information_updating_courses
-
+from users.permissions import IsModer, IsOwner
 
 """CRUD для Course."""
+
+
 class CourseViewSet(ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
     pagination_class = CustomPagination
 
     """Метод для управления созданием объекта и автомат привязки создаваемого объекта к авторизованному пользователю."""
+
     def perform_create(self, serializer):
         course = serializer.save()
         course.owner = self.request.user
@@ -100,7 +109,7 @@ class CoursePaymentCreateApiView(CreateAPIView):
     serializer_class = CoursePaymentSerializer
 
     def perform_create(self, serializer):
-        course_id = self.request.data.get('course_id')
+        course_id = self.request.data.get("course_id")
         course = get_object_or_404(Course, id=course_id)
         payment = serializer.save(user=self.request.user, course=course)
         if payment.course is None:
@@ -111,4 +120,3 @@ class CoursePaymentCreateApiView(CreateAPIView):
         payment.session_id = session_id
         payment.link = payment_link
         payment.save()
- 
