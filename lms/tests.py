@@ -1,8 +1,9 @@
+from django.urls import reverse
+from rest_framework import status
 from rest_framework.test import APITestCase
+
 from lms.models import Course, Lesson, Subscription
 from users.models import User
-from rest_framework import status
-from django.urls import reverse
 
 
 class LessonTestCase(APITestCase):
@@ -35,9 +36,7 @@ class LessonTestCase(APITestCase):
 
     def test_lesson_update(self):
         url = reverse("lms:lessons_update", args=(self.lesson.pk,))
-        data = {
-            "name": "Пайтон нов"
-            }
+        data = {"name": "Пайтон нов"}
         response = self.client.patch(url, data)
         data = response.json()
         self.assertEqual(response.status_code, status.HTTP_200_OK)

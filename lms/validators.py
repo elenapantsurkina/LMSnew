@@ -1,6 +1,5 @@
 from rest_framework.serializers import ValidationError
 
-
 """Проверяет на использование ссылки только на yuotube.com."""
 
 
