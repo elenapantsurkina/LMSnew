@@ -1,0 +1,54 @@
+version: '3.9'
+
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./.env
+    environment:
+      - DEBUG=False
+      - DATABASE_HOST=db
+    volumes:
+      - .:/code
+      - static_volume:/code/static
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./.env
+    expose:
+      - "5432"
+
+  redis:
+    image: redis:6
+
+  celery:
+    build: .
+    command: >
+      bash -c "celery -A config worker -l INFO --concurrency=500 --pool=gevent"
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - db
+
+  celery_beat:
+    build: .
+    env_file:
+      - .env
+    command: >
+      bash -c "celery -A config beat --loglevel=info"
+    depends_on:
+      - redis
+      - db
+
+volumes:
+  postgres_data:
+  static_volume:
