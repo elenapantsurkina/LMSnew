@@ -20,7 +20,7 @@ class CourseViewSet(ModelViewSet):
     serializer_class = CourseSerializer
     pagination_class = CustomPagination
 
-    """Метод для управления созданием объекта и автомат привязки создаваемого объекта к авторизованному пользователю."""
+    """Метод для управления созданием объекта и автом привязки создаваемого объекта к авторизованному пользователю."""
 
     def perform_create(self, serializer):
         course = serializer.save()

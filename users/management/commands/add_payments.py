@@ -11,8 +11,6 @@ class Command(BaseCommand):
         #  Создаем курсы
         course1 = Course.objects.create(name="Джанго", description="Добрый добрый джанго", preview=None)
 
-        course2 = Course.objects.create(name="Пайтон", description="Пайтон великолепный", preview=None)
-
         self.stdout.write(self.style.SUCCESS("Курсы созданы успешно."))
 
         # Создаем уроки
