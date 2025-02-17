@@ -58,6 +58,21 @@ jobs:
       - name: Install dependencies
         run: poetry install --no-root
 
+      - name: Set up PostgreSQL
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql postgresql-contrib
+
+          # Запуск службы PostgreSQL
+          sudo service postgresql start
+
+          # Создание базы данных и пользователя
+          sudo -u postgres psql -c "CREATE DATABASE ${POSTGRES_DB};"
+          sudo -u postgres psql -c "CREATE USER ${POSTGRES_USER} WITH PASSWORD '${POSTGRES_PASSWORD}';"
+          sudo -u postgres psql -c "ALTER ROLE ${POSTGRES_USER} SET client_encoding TO 'utf8';"
+          sudo -u postgres psql -c "ALTER ROLE ${POSTGRES_USER} SET default_transaction_isolation TO 'read committed';"
+          sudo -u postgres psql -c "ALTER ROLE ${POSTGRES_USER} SET timezone TO 'UTC';"  
+
       - name: Run migrations
         run: poetry run python manage.py migrate
 
