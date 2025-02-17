@@ -65,6 +65,10 @@ jobs:
 
           # Запуск службы PostgreSQL
           sudo service postgresql start
+          
+          export POSTGRES_DB="${{ secrets.POSTGRES_DB }}"
+          export POSTGRES_USER="${{ secrets.POSTGRES_USER }}"
+          export POSTGRES_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}"
 
           # Создание базы данных и пользователя
           sudo -u postgres psql -c "CREATE DATABASE ${POSTGRES_DB};"
