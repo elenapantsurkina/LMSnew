@@ -78,17 +78,11 @@ jobs:
           sudo -u postgres psql -c "ALTER ROLE ${POSTGRES_USER} SET client_encoding TO 'utf8';"
           sudo -u postgres psql -c "ALTER ROLE ${POSTGRES_USER} SET default_transaction_isolation TO 'read committed';"
           sudo -u postgres psql -c "ALTER ROLE ${POSTGRES_USER} SET timezone TO 'UTC';"  
+          sudo -u postgres psql -c "\du"
+          sudo service postgresql status
 
       - name: Run migrations
         run: poetry run python manage.py migrate
-
-      - name: List PostgreSQL Users
-        run: |
-          sudo -u postgres psql -c "\du"
-
-      - name: Check PostgreSQL Status
-        run: |
-          sudo service postgresql status
 
 
       - name: Run tests
