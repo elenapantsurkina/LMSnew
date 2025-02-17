@@ -63,19 +63,23 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y postgresql postgresql-contrib
 
-          # Запуск службы PostgreSQL
           sudo service postgresql start
           
           export POSTGRES_DB="${{ secrets.POSTGRES_DB }}"
           export POSTGRES_USER="${{ secrets.POSTGRES_USER }}"
           export POSTGRES_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}"
 
-          # Создание базы данных и пользователя
+          sudo -u postgres psql -c "DROP DATABASE IF EXISTS ${POSTGRES_DB};"
+          sudo -u postgres psql -c "DROP USER IF EXISTS ${POSTGRES_USER};"
+
           sudo -u postgres psql -c "CREATE DATABASE ${POSTGRES_DB};"
+          
           sudo -u postgres psql -c "CREATE USER ${POSTGRES_USER} WITH PASSWORD '${POSTGRES_PASSWORD}';"
+          
           sudo -u postgres psql -c "ALTER ROLE ${POSTGRES_USER} SET client_encoding TO 'utf8';"
           sudo -u postgres psql -c "ALTER ROLE ${POSTGRES_USER} SET default_transaction_isolation TO 'read committed';"
           sudo -u postgres psql -c "ALTER ROLE ${POSTGRES_USER} SET timezone TO 'UTC';"
+          
           sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE ${POSTGRES_DB} TO ${POSTGRES_USER};"
 
       - name: Run migrations
