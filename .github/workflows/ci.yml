@@ -72,14 +72,11 @@ jobs:
 
           # Создание базы данных и пользователя
           sudo -u postgres psql -c "CREATE DATABASE ${POSTGRES_DB};"
-          sudo -u postgres psql -c "DO \$\$ BEGIN IF NOT EXISTS 
-          (SELECT 1 FROM pg_roles WHERE rolname = '$POSTGRES_USER') 
-          THEN CREATE USER $POSTGRES_USER WITH PASSWORD '$POSTGRES_PASSWORD'; END IF; END \$\$;"
+          sudo -u postgres psql -c "CREATE USER ${POSTGRES_USER} WITH PASSWORD '${POSTGRES_PASSWORD}';"
           sudo -u postgres psql -c "ALTER ROLE ${POSTGRES_USER} SET client_encoding TO 'utf8';"
           sudo -u postgres psql -c "ALTER ROLE ${POSTGRES_USER} SET default_transaction_isolation TO 'read committed';"
-          sudo -u postgres psql -c "ALTER ROLE ${POSTGRES_USER} SET timezone TO 'UTC';"  
-          sudo -u postgres psql -c "\du"
-          sudo service postgresql status
+          sudo -u postgres psql -c "ALTER ROLE ${POSTGRES_USER} SET timezone TO 'UTC';"
+          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE ${POSTGRES_DB} TO ${POSTGRES_USER};"
 
       - name: Run migrations
         run: poetry run python manage.py migrate
