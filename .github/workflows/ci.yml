@@ -82,6 +82,15 @@ jobs:
       - name: Run migrations
         run: poetry run python manage.py migrate
 
+      - name: List PostgreSQL Users
+        run: |
+          sudo -u postgres psql -c "\du"
+
+      - name: Check PostgreSQL Status
+        run: |
+          sudo service postgresql status
+
+
       - name: Run tests
         run: poetry run python manage.py test
 
