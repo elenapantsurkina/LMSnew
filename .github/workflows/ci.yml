@@ -71,7 +71,7 @@ jobs:
           export POSTGRES_PORT="${{ secrets.POSTGRES_PORT }}"
 
           sudo -u postgres psql -c "DROP DATABASE IF EXISTS ${POSTGRES_DB};"
-        # sudo -u postgres psql -c "DROP USER IF EXISTS ${POSTGRES_USER};"
+
 
           sudo -u postgres psql -c "CREATE DATABASE ${POSTGRES_DB};"
           
