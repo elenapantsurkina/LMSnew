@@ -8,6 +8,7 @@
 ## Установка:
 1. Клонируйте репозиторий 
 ``` git clone nttps:https://github.com/elenapantsurkina/LMSnew```
+2. 
 
 
 ## Зависимости
@@ -17,7 +18,8 @@
 
 ## Установка зависимостей
 ```pip install django```
-
+создайте файл .env и укажите там переменные: SECRET_KEY, NAME,USER_NAME,PASSWORD,HOST,PORT,STRIPE_API_KEY, 
+CELERY_BROKER_URL,CELERY_RESULT_BACKEND, EMAIL_HOST,EMAIL_PORT, EMAIL_HOST_USER,EMAIL_HOST_PASSWORD
 
 ## Конфигурация
 Перед запуском проекта убедитесь, что все зависимости установлены и выполнены необходимые конфигурационные шаги
@@ -25,7 +27,13 @@
 
 ## Использование:
 Для запуска проекта с использованием Docker Compose выполните следующую команду: 'docker-compose up --build'
-Для проверки работы выполните команду `python manage.py runserver`
+Для развертывания проекта на сервере клонируйте репозиторий
+Установите git и docker
+Перенесите из .env все параметры в секреты. 
+Также добавьте : DOCKER_HUB_ACCESS_TOKEN,DOCKER_HUB_USERNAME, SERVER_IP, SSH_KEY, SSH_USER
+Запушьте любой коммит
+
+Для проверки работы приложения на localhost выполните команду `python manage.py runserver`
 
 
 ## Функционал:
@@ -52,11 +60,6 @@ CRUD уровок и функционал работы подписки на о�
 Добавлена фоновая задача, которая проверяет пользователей по дате последнего входа, 
 если пользователь не заходил более месяца, блокироует его с помощью флага 
 is_active.
-
-
-
-
-
 
 
 ## Документация:
