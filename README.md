@@ -26,12 +26,22 @@ CELERY_BROKER_URL,CELERY_RESULT_BACKEND, EMAIL_HOST,EMAIL_PORT, EMAIL_HOST_USER,
 
 
 ## Использование:
-Для запуска проекта с использованием Docker Compose выполните следующую команду: 'docker-compose up --build'
+Настройка сервера
+Откройте терминал и выполните команду для обновления списка пакетов:
+sudo apt update
+Затем выполните команду для обновления всех установленных пакетов до их последних версий:
+sudo apt upgrade
+Эта команда может потребовать подтверждения перед началом обновления.
+Рекомендуем соглашаться с установкой всех обновлений, чтобы убедиться, 
+что ваша система работает на последней версии программного обеспечения
+Сгенерируйте SSH-ключ и добавьте его в GitHub Secrets.
+Перенесите из .env все параметры в GitHub Secrets. 
+Также добавьте : DOCKER_HUB_ACCESS_TOKEN,DOCKER_HUB_USERNAME, SERVER_IP, SSH_PRIVATE_KEY, SSH_USER
 Для развертывания проекта на сервере клонируйте репозиторий
-Установите git и docker
-Перенесите из .env все параметры в секреты. 
-Также добавьте : DOCKER_HUB_ACCESS_TOKEN,DOCKER_HUB_USERNAME, SERVER_IP, SSH_KEY, SSH_USER
-Запушьте любой коммит
+Развёртывание приложения происходит через Docker, его необходимо установить на сервер,
+действуйте согласно инструкции https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository.
+Проверка и деплой сервера происходит через GitHubActions автоматически. 
+запуск сервера происходит c помощью команды 'docker-compose up --build' автоматически
 
 Для проверки работы приложения на localhost выполните команду `python manage.py runserver`
 
