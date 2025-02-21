@@ -1,7 +1,7 @@
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-from unittest.mock import patch
+# from unittest.mock import patch
 from lms.models import Course, Lesson
 from users.models import User
 
