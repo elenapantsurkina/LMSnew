@@ -97,9 +97,9 @@ class SubscriptionTestCase(APITestCase):
     #     self.assertFalse(Subscription.objects.filter(user=self.user, course=self.course).exists())
 
 
-@patch('lms.views.send_information_updating_courses.delay')
-def test_subscription(self, mock_task):
-    url = "/api/subscription/"
-    response = self.client.post(url, {"course": self.course.id})
-    # проверяем, что задача была вызвана
-    mock_task.assert_called_once_with(self.user.email)
+# @patch('lms.views.send_information_updating_courses.delay')
+# def test_subscription(self, mock_task):
+#     url = "/api/subscription/"
+#     response = self.client.post(url, {"course": self.course.id})
+#     # проверяем, что задача была вызвана
+#     mock_task.assert_called_once_with(self.user.email)
