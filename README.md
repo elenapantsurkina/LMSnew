@@ -8,6 +8,7 @@
 ## Установка:
 1. Клонируйте репозиторий 
 ``` git clone nttps:https://github.com/elenapantsurkina/LMSnew```
+2. 
 
 
 ## Зависимости
@@ -17,14 +18,33 @@
 
 ## Установка зависимостей
 ```pip install django```
-
+создайте файл .env и укажите там переменные: SECRET_KEY, NAME,USER_NAME,PASSWORD,HOST,PORT,STRIPE_API_KEY, 
+CELERY_BROKER_URL,CELERY_RESULT_BACKEND, EMAIL_HOST,EMAIL_PORT, EMAIL_HOST_USER,EMAIL_HOST_PASSWORD
 
 ## Конфигурация
 Перед запуском проекта убедитесь, что все зависимости установлены и выполнены необходимые конфигурационные шаги
 
 
 ## Использование:
-Для проверки работы выполните команду `python manage.py runserver`
+Удаленный сервер находится по адресу http://158.160.167.2
+Настройка сервера
+Откройте терминал и выполните команду для обновления списка пакетов:
+sudo apt update
+Затем выполните команду для обновления всех установленных пакетов до их последних версий:
+sudo apt upgrade
+Установите Git выполнив команду sudo apt install git.
+Перейдите в директорию cd/home/elena
+Клонируйте репозиторий git clone https://github.com/elenapantsurkina/LMSnew/tree/feature_35_2.git
+Сгенерируйте SSH-ключ и добавьте его в GitHub Secrets.
+Перенесите из .env все параметры в GitHub Secrets. 
+Также добавьте : DOCKER_HUB_ACCESS_TOKEN,DOCKER_HUB_USERNAME, SERVER_IP, SSH_PRIVATE_KEY, SSH_USER
+Развёртывание приложения происходит через Docker, его необходимо установить на сервер,
+действуйте согласно инструкции https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository.
+Запуште любой коммит
+запуск сервера происходит c помощью команды 'docker-compose up --build' 
+
+
+Для проверки работы приложения на localhost выполните команду `python manage.py runserver`
 
 
 ## Функционал:
@@ -51,11 +71,6 @@ CRUD уровок и функционал работы подписки на о�
 Добавлена фоновая задача, которая проверяет пользователей по дате последнего входа, 
 если пользователь не заходил более месяца, блокироует его с помощью флага 
 is_active.
-
-
-
-
-
 
 
 ## Документация:

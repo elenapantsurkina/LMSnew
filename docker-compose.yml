@@ -1,53 +1,83 @@
-version: '3.9'
-
 services:
-  web:
-    build: .
-    command: python manage.py runserver 0.0.0.0:8000
-    ports:
-      - "8000:8000"
-    env_file:
-      - ./.env
+  postgres:
+    image: postgres:latest
     environment:
-      - DEBUG=False
-      - DATABASE_HOST=db
-    volumes:
-      - .:/code
-      - static_volume:/code/static
-    depends_on:
-      - db
-
-  db:
-    image: postgres:16
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    env_file:
-      - ./.env
-    expose:
-      - "5432"
+    networks:
+      - lms_network
 
   redis:
-    image: redis:6
+    image: redis:latest
+    networks:
+      - lms_network
 
   celery:
     build: .
-    command: >
-      bash -c "celery -A config worker -l INFO --concurrency=500 --pool=gevent"
-    env_file:
-      - .env
+    command: poetry run celery -A config worker -l INFO --concurrency=500 --pool=gevent
+    volumes:
+      - .:/lms_drf
     depends_on:
+      - postgres
       - redis
-      - db
+    networks:
+      - lms_network
 
-  celery_beat:
+  celery-beat:
     build: .
-    env_file:
-      - .env
-    command: >
-      bash -c "celery -A config beat --loglevel=info"
+    command: poetry run celery -A config beat --loglevel=info
+    volumes:
+      - .:/lms_drf
     depends_on:
+      - postgres
       - redis
-      - db
+    networks:
+      - lms_network
+
+  lms_drf:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: sh -c "poetry run python manage.py collectstatic --noinput && poetry run gunicorn config.wsgi:application --bind 0.0.0.0:8000"
+    volumes:
+      - .:/lms_drf
+      - static_volume:/lms_drf/staticfiles
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}
+      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+      - STRIPE_API_KEY=${STRIPE_API_KEY}
+      - EMAIL_HOST=${EMAIL_HOST}
+      - EMAIL_PORT=${EMAIL_PORT}
+      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - lms_network
+
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - static_volume:/nginx/staticfiles
+    depends_on:
+      - lms_drf
+    networks:
+      - lms_network
+
+networks:
+  lms_network:
 
 volumes:
   postgres_data:

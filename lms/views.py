@@ -1,11 +1,5 @@
-from rest_framework.generics import (
-    CreateAPIView,
-    DestroyAPIView,
-    ListAPIView,
-    RetrieveAPIView,
-    UpdateAPIView,
-    get_object_or_404,
-)
+from rest_framework.generics import (CreateAPIView, DestroyAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView,
+                                     get_object_or_404)
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -26,7 +20,7 @@ class CourseViewSet(ModelViewSet):
     serializer_class = CourseSerializer
     pagination_class = CustomPagination
 
-    """Метод для управления созданием объекта и автомат привязки создаваемого объекта к авторизованному пользователю."""
+    """Метод для управления созданием объекта и автом привязки создаваемого объекта к авторизованному пользователю."""
 
     def perform_create(self, serializer):
         course = serializer.save()
