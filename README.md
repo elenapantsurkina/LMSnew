@@ -40,7 +40,7 @@ sudo apt upgrade
 Также добавьте : DOCKER_HUB_ACCESS_TOKEN,DOCKER_HUB_USERNAME, SERVER_IP, SSH_PRIVATE_KEY, SSH_USER
 Развёртывание приложения происходит через Docker, его необходимо установить на сервер,
 действуйте согласно инструкции https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository.
-Запуште любой коммит.
+Запуште любой коммит
 запуск сервера происходит c помощью команды 'docker-compose up --build' 
 
 
